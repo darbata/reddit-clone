@@ -1,0 +1,24 @@
+<h2>Home</h2>
+
+<%= form_with url: posts_path, method: :get, local: true do %>
+    <label for="community">Browse a Community:</label>
+    <%= select_tag "community_id",
+        options_from_collection_for_select(Community.all, :id, :name, params[:community_id]),
+        include_blank: "All Communities",
+        onchange: "this.form.submit();" %>
+<% end %>    
+
+<hr>
+
+<% if @posts.any? %>
+    <% @posts.each do |post| %>
+        <div>
+            <h3><%= link_to post.title, post_path(post) %></h3>
+            <p><%= truncate(post.content, length:150) %></p>
+            <small>Posted in <%= link_to post.community.name, posts_path(community_id: post.community.id) %></small>
+        </div>
+        <hr>
+    <% end %>
+<% else %>
+    <p>No posts found.</p>
+<% end %>

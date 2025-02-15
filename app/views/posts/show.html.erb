@@ -1,0 +1,29 @@
+<h2><%= @post.title %></h2>
+
+<p>
+  Posted by <%= @post.user.username %> in 
+  <%= link_to @post.community.name, posts_path(community_id: @post.community.id) %> |
+  <%= time_ago_in_words(@post.created_at) %> ago
+</p>
+
+<hr>
+
+<p><%= simple_format(@post.content) %></p>
+
+<div class="post-voting">
+  <%= form_with url: upvote_post_path(@post), method: :post, local: true do %>
+    <button type="submit" class="vote-button upvote">
+      Upvote
+    </button>
+  <% end %>
+
+  <div class="vote-score">
+    <strong><%= @post.score %></strong>
+  </div>
+
+  <%= form_with url: downvote_post_path(@post), method: :post, local: true do %>
+    <button type="submit" class="vote-button downvote">
+      Downvote
+    </button>
+  <% end %>
+</div>

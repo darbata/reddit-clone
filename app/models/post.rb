@@ -1,9 +1,10 @@
 class Post < ApplicationRecord
   belongs_to :user
   belongs_to :community
-  has_many :votes, dependent: :destroy
+
+  acts_as_votable
 
   def score
-    voits.sum(:value)
+    get_upvotes.size - get_downvotes.size
   end
 end

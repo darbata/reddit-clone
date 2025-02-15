@@ -1,32 +1,15 @@
-<h1>Username</h1>
-<h2>Posts</h2>
-    <ul>
-        <li>
-            <div>
-                <h3>Community Name</h3>
-                <h4>Post Title</h4>
-                <p>Post Content</p>
-            </div>
-        </li>
-        <li>
-            <div>
-                <h3>Community Name</h3>
-                <h4>Post Title</h4>
-                <p>Post Content</p>
-            </div>
-        </li>
-        <li>
-            <div>
-                <h3>Community Name</h3>
-                <h4>Post Title</h4>
-                <p>Post Content</p>
-            </div>
-        </li>
-        <li>
-            <div>
-                <h3>Community Name</h3>
-                <h4>Post Title</h4>
-                <p>Post Content</p>
-            </div>
-        </li>
-    </ul>
+<h2><%= @user.username %>'s Profile</h2>
+
+<h3>Recent Posts</h3>
+<% if @posts.any? %>
+  <% @posts.each do |post| %>
+    <div>
+      <h3><%= link_to post.title, post_path(post) %></h3>
+      <p><%= truncate(post.content, length: 150) %></p>
+      <small>Posted in <%= link_to post.community.name, posts_path(community_id: post.community.id) %></small>
+    </div>
+    <hr>
+  <% end %>
+<% else %>
+  <p>This user has not posted anything yet.</p>
+<% end %>

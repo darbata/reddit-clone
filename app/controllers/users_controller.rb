@@ -1,14 +1,11 @@
 class UsersController < ApplicationController
   def show
-    @user = if params[:username]
-              User.find_by(username: params[:username])
-            else
-              current_user
-            end
+    @user = User.find_by(username: params[:username])
 
-    unless @user
-      flash[:alert] = "User not found."
-      redirect_to root_path
+    if @user.nil?
+      redirect_to root_path, alert: "User not found"
+    else
+      @posts = @user.posts.order(created_at: :desc)
     end
   end
 end

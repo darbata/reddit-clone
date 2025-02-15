@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_15_073734) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_15_130042) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -69,13 +69,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_15_073734) do
   end
 
   create_table "votes", force: :cascade do |t|
-    t.integer "value"
-    t.bigint "post_id", null: false
-    t.bigint "user_id", null: false
+    t.string "votable_type"
+    t.bigint "votable_id"
+    t.string "voter_type"
+    t.bigint "voter_id"
+    t.boolean "vote_flag"
+    t.string "vote_scope"
+    t.integer "vote_weight"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["post_id"], name: "index_votes_on_post_id"
-    t.index ["user_id"], name: "index_votes_on_user_id"
+    t.index ["votable_id", "votable_type", "vote_scope"], name: "index_votes_on_votable_id_and_votable_type_and_vote_scope"
+    t.index ["votable_type", "votable_id"], name: "index_votes_on_votable"
+    t.index ["voter_id", "voter_type", "vote_scope"], name: "index_votes_on_voter_id_and_voter_type_and_vote_scope"
+    t.index ["voter_type", "voter_id"], name: "index_votes_on_voter"
   end
 
   add_foreign_key "communities", "users", column: "creator_id"
@@ -85,6 +91,4 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_15_073734) do
   add_foreign_key "memberships", "users"
   add_foreign_key "posts", "communities"
   add_foreign_key "posts", "users"
-  add_foreign_key "votes", "posts"
-  add_foreign_key "votes", "users"
 end

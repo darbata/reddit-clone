@@ -1,10 +1,22 @@
 Rails.application.routes.draw do
   devise_for :users
 
+  root "posts#index"
+
   resources :follows, only: [:create, :destroy]
+  resources :communities, only: [:index, :show]
+
+  resources :posts, only: [:index, :show] do
+    resources :comments, only: [:create]
+    
+    member do
+      post :upvote, to:'votes#upvote'
+      post :downvote, to: 'votes#downvote' 
+    end
+  end
 
   authenticated :user do
-    root to: "users#show", as: :authenticated_root
+    root to: "posts#index", as: :authenticated_root
   end
 
   unauthenticated do

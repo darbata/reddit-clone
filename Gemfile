@@ -1,5 +1,7 @@
 source "https://rubygems.org"
 
+gem "acts_as_votable", "~>0.12.1"
+
 gem "devise"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0.1"
