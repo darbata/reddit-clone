@@ -15,7 +15,7 @@
         <div>
             <h3><%= link_to post.title, post_path(post) %></h3>
             <p><%= truncate(post.content, length:150) %></p>
-            <small>Posted in <%= link_to post.community.name, posts_path(community_id: post.community.id) %></small>
+            <small>Posted in <%= link_to post.community.name, community_path(post.community) %></small>
         </div>
         <hr>
     <% end %>

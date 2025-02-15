@@ -1,14 +1,20 @@
 Rails.application.routes.draw do
+  get "memberships/create"
+  get "memberships/destroy"
+  get "memberships/update"
   devise_for :users
 
   root "posts#index"
 
   resources :follows, only: [:create, :destroy]
-  resources :communities, only: [:index, :show]
+
+  resources :communities, only: [:index, :show] do
+    resource :membership, only: [:create, :destroy, :update]
+    resources :posts, only: [:new, :create]
+  end
 
   resources :posts, only: [:index, :show] do
     resources :comments, only: [:create]
-    
     member do
       post :upvote, to:'votes#upvote'
       post :downvote, to: 'votes#downvote' 

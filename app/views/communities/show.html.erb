@@ -1,0 +1,27 @@
+<h1><%= @community.name %></h1>
+<p><%= @community.description %></p>
+
+<% if current_user.memberships.exists?(community: @community) %>
+  <%= button_to "Unfollow", community_membership_path(@community), method: :delete, data: { confirm: "Are you sure you want to leave?" } %>
+<% else %>
+  <%= button_to "Follow", community_membership_path(@community), method: :post %>
+<% end %>
+
+<%= link_to "Create a New Post", new_community_post_path(@community), class: "button"%>
+
+<h2>Posts in <%= @community.name %></h2>
+
+<% if @community.posts.any? %>
+  <% @community.posts.order(created_at: :desc).each do |post| %>
+    <div class="post">
+      <h3><%= link_to post.title, post_path(post) %></h3>
+      <p><%= truncate(post.content, length: 150) %></p>
+      <small>
+        Posted <%= time_ago_in_words(post.created_at) %> ago by <%= post.user.username %>
+      </small>
+      <hr>
+    </div>
+  <% end %>
+<% else %>
+  <p>No posts have been made in this community yet.</p>
+<% end %>

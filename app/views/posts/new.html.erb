@@ -1,0 +1,18 @@
+<h2>Create a New Post in <%= @community.name %></h2>
+
+# nest under community
+<%= form_with model: [@community, @post], local: true do |form| %>
+  <div>
+    <%= form.label :title %><br>
+    <%= form.text_field :title %>
+  </div>
+  
+  <div>
+    <%= form.label :content %><br>
+    <%= form.text_area :content %>
+  </div>
+
+  <div>
+    <%= form.submit "Create Post" %>
+  </div>
+<% end %>
